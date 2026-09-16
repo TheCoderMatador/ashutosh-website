@@ -16,35 +16,39 @@ function NameReveal({
   baseDelay: number;
   reduced: boolean;
 }) {
-  const letters = NAME.split("");
+  const className =
+    "font-serif text-[13vw] leading-[0.95] sm:text-[9vw] lg:text-[5.4rem] tracking-tight";
 
   if (reduced) {
-    return (
-      <h1 className="font-serif text-[13vw] leading-[0.95] sm:text-[9vw] lg:text-[6.5rem] tracking-tight">
-        {NAME}
-      </h1>
-    );
+    return <h1 className={className}>{NAME}</h1>;
   }
 
+  let index = 0;
+
   return (
-    <h1
-      aria-label={NAME}
-      className="font-serif text-[13vw] leading-[0.95] sm:text-[9vw] lg:text-[6.5rem] tracking-tight"
-    >
-      {letters.map((letter, i) => (
-        <motion.span
-          key={`${letter}-${i}`}
-          className="inline-block"
-          initial={{ opacity: 0, y: "0.4em" }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: baseDelay + i * 0.03,
-            duration: 0.6,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        >
-          {letter === " " ? " " : letter}
-        </motion.span>
+    <h1 aria-label={NAME} className={className}>
+      {NAME.split(" ").map((word, w) => (
+        <span key={w} className="inline-block whitespace-nowrap">
+          {word.split("").map((letter) => {
+            const i = index++;
+            return (
+              <motion.span
+                key={i}
+                className="inline-block"
+                initial={{ opacity: 0, y: "0.4em" }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: baseDelay + i * 0.03,
+                  duration: 0.6,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                {letter}
+              </motion.span>
+            );
+          })}
+          {w === 0 ? " " : null}
+        </span>
       ))}
     </h1>
   );
